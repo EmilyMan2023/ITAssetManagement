@@ -1,5 +1,6 @@
 from flask import Blueprint, render_template, request, redirect, url_for, flash
 from flask_login import login_required, current_user
+from website.decorators import admin_only
 from website.models import Asset
 from . import db
 
@@ -9,9 +10,11 @@ views = Blueprint('views', __name__)
 @login_required
 def home():
     print("🔍 Current user ID:", current_user.id)
-    print("🔒 Is authenticated:", current_user.is_authenticated)
+    print("🔒 Authenticated:", current_user.is_authenticated)
+    
     assets = Asset.query.filter_by(user_id=current_user.id).all()
     return render_template("home.html", user=current_user, assets=assets)
+
 
 
 @views.route('/assets/add', methods=['GET', 'POST'])
@@ -67,6 +70,17 @@ def edit_asset(id):
         return redirect(url_for('views.home'))
 
     return render_template('edit_asset.html', asset=asset, user=current_user)
+
+@views.route('/delete-asset/<int:id>', methods=['POST'])
+@login_required
+@admin_only
+def delete_asset(id):
+    asset = Asset.query.get_or_404(id)
+    db.session.delete(asset)
+    db.session.commit()
+    flash("Asset deleted successfully.", category="success")
+    return redirect(url_for('views.home'))
+
 
 
 
