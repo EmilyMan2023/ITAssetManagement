@@ -3,18 +3,41 @@
 
 {% block content %}
 <h2>All Assets</h2>
-<ul class="list-group mb-3">
-  {% for asset in assets %}
-    <li class="list-group-item">
-      <strong>{{ asset.asset_name }}</strong><br>
-      Category: {{ asset.category }}<br>
-      Purchase Date: {{ asset.purchase_date }}<br>
-      Condition: {{ asset.condition }}<br>
-      Status: {{ asset.status }}<br>
-      <a href="{{ url_for('views.edit_asset', id=asset.id) }}">Edit</a>
-    </li>
-  {% endfor %}
-</ul>
+<p class="text-success">If this text is green, Bootstrap is working!</p>
+
+{% if assets %}
+  <table class="table table-striped table-hover mt-4">
+    <thead class="table-dark">
+      <tr>
+        <th>ID</th>
+        <th>Asset Name</th>
+        <th>Category</th>
+        <th>Purchase Date</th>
+        <th>Condition</th>
+        <th>Status</th>
+        <th>Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for asset in assets %}
+        <tr>
+          <td>{{ asset.id }}</td>
+          <td>{{ asset.asset_name }}</td>
+          <td>{{ asset.category }}</td>
+          <td>{{ asset.purchase_date }}</td>
+          <td>{{ asset.condition }}</td>
+          <td>{{ asset.status }}</td>
+          <td>
+            <a href="{{ url_for('views.edit_asset', id=asset.id) }}" class="btn btn-sm btn-primary">Edit</a>
+          </td>
+        </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+{% else %}
+  <p class="mt-4">No assets yet. Time to start tracking!</p>
+{% endif %}
+
 
 <a href="{{ url_for('views.add_asset') }}" class="btn btn-primary">➕ Add New Asset</a>
 {% endblock %}
