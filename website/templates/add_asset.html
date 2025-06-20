@@ -1,0 +1,45 @@
+{% extends "base.html" %}
+{% block title %}Assets{% endblock %}
+
+
+{% block content %}
+
+
+<h2>Add Asset</h2>
+
+<form method="POST" action="{{ url_for('views.add_asset') }}">
+  <div class="container mt-4">
+  <h2>Add New Asset</h2>
+  <form method="POST">
+    <div class="mb-3">
+      <label class="form-label">Asset Name</label>
+      <input type="text" name="asset_name" class="form-control" required>
+    </div>
+
+    <div class="mb-3">
+      <label class="form-label">Category</label>
+      <input type="text" name="category" class="form-control" required>
+    </div>
+
+    <div class="mb-3">
+      <label class="form-label">Purchase Date (YYYYMMDD or as float)</label>
+      <input type="number" name="purchase_date" class="form-control" step="0.01" required>
+    </div>
+
+    <div class="mb-3">
+      <label class="form-label">Condition</label>
+      <input type="text" name="condition" class="form-control">
+    </div>
+
+    <div class="mb-3">
+      <label class="form-label">Status</label>
+      <input type="text" name="status" class="form-control">
+    </div>
+
+    <button type="submit" class="btn btn-primary">Submit</button>
+  </form>
+</div>
+</form>
+
+
+{% endblock %}

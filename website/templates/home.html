@@ -1,4 +1,28 @@
 {% extends "base.html" %}
 {% block title %}HOME{% endblock %}
 
-{% block content %}<h1>this is the home page</h1> {% endblock %}
+{% block content %}
+  <h2>Welcome, {{ user.first_name }}!</h2>
+
+  <a href="{{ url_for('views.add_asset') }}">➕ Add New Asset</a>
+
+  <h3>Your Assets</h3>
+        {% if assets %}
+        <ul class="list-group mb-3">
+        {% for asset in assets %}
+            <li class="list-group-item">
+            <strong>ID:</strong> {{ asset.id }}<br>
+            <strong>User ID:</strong> {{ asset.user_id }}<br>
+            <strong>Name:</strong> {{ asset.asset_name }}<br>
+            <strong>Category:</strong> {{ asset.category }}<br>
+            <strong>Purchase Date:</strong> {{ asset.purchase_date }}<br>
+            <strong>Condition:</strong> {{ asset.condition }}<br>
+            <strong>Status:</strong> {{ asset.status }}<br>
+            <a href="{{ url_for('views.edit_asset', id=asset.id) }}">Edit</a>
+            </li>
+        {% endfor %}
+        </ul>
+        {% else %}
+         <p>No assets yet. Get started by adding one!</p>
+        {% endif %}
+{% endblock %}

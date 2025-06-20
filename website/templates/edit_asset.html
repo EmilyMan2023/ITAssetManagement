@@ -1,0 +1,8 @@
+
+<h2>Edit Asset</h2>
+<form method="POST">
+  <input type="text" name="name" value="{{ asset.name }}" required>
+  <input type="text" name="description" value="{{ asset.description }}" required>
+  <button type="submit">Update</button>
+</form>
+{% endblock %}
