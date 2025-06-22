@@ -39,26 +39,34 @@ def sign_up():
     if request.method == 'POST':
         email = request.form.get('email')
         first_name = request.form.get('firstName')
+        last_name = request.form.get('lastName')
         password1 = request.form.get('password1')
         password2 = request.form.get('password2')
+        role = request.form.get('role') 
 
         user = User.query.filter_by(email=email).first()
         if user:
             flash('Email already exists!', category='error')
         elif len(email) < 4:
             flash('Email must be greater than 3 characters.', category='error')
-            pass
         elif len(first_name) < 2:
-            flash('first name must be greater than 1 characters.', category='error')
-            pass
+            flash('First name must be greater than 1 character.', category='error')
+        elif len(last_name) < 2:
+            flash('Last name must be greater than 1 character.', category='error')
         elif password1 != password2:
             flash('Passwords do not match.', category='error')
-            pass
         elif len(password1) < 6:
             flash('Password must be greater than 5 characters.', category='error')
-            pass
+        elif role not in ['user', 'admin']:
+            flash('Invalid role selected.', category='error')
         else:
-            new_user = User(email=email, first_name=first_name, password=generate_password_hash(password1, method='pbkdf2:sha256'), role='user')
+            new_user = User(
+                email=email,
+                first_name=first_name,
+                last_name=last_name,
+                password=generate_password_hash(password1, method='pbkdf2:sha256'),
+                role=role
+            )
             db.session.add(new_user)
             db.session.commit()
             login_user(new_user, remember=True)
