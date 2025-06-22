@@ -20,6 +20,14 @@ def home():
 
     return render_template('home.html', user=current_user, assets=assets, all_users=all_users)
 
+@views.route('/users')
+@login_required
+def users():
+    from .models import User
+    all_users = User.query.all()
+    
+    return render_template('users.html', users=all_users)
+
 
 
 @views.route('/assets/add', methods=['GET', 'POST'])

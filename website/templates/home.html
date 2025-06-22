@@ -2,9 +2,13 @@
 {% block title %}HOME{% endblock %}
 
 {% block content %}
+<br>
   <h2>Welcome, {{ user.first_name }}!</h2>
 
-  <a href="{{ url_for('views.add_asset') }}" class="btn btn-primary mb-3">➕ Add New Asset</a>
+  <div class="d-flex justify-content-end mb-3">
+    <a href="{{ url_for('views.add_asset') }}" class="btn btn-primary">➕ Add New Asset</a>
+  </div>
+
 
   {% if assets %}
     <table class="table table-striped table-hover mt-4">
