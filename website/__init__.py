@@ -10,8 +10,10 @@ DB_NAME = os.path.join(os.path.dirname(__file__), 'database.db')
 def create_app():
     app = Flask(__name__)
     app.config['SECRET_KEY'] = 'qwertyuiop'
-    app.config['SQLALCHEMY_DATABASE_URI'] = f'sqlite:///{DB_NAME}'
-    print("DB URI:", app.config['SQLALCHEMY_DATABASE_URI'])
+    if 'SQLALCHEMY_DATABASE_URI' not in app.config:
+        DB_NAME = os.path.join(os.path.dirname(__file__), 'database.db')
+        app.config['SQLALCHEMY_DATABASE_URI'] = f'sqlite:///{DB_NAME}'
+
 
     db.init_app(app)
 
