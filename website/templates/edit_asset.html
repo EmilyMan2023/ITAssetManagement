@@ -1,15 +1,32 @@
 {% extends "base.html" %}
-{% block title %}Assets{% endblock %}
+{% block title %}Edit Asset{% endblock %}
 
 {% block content %}
-<h2>Edit Asset</h2>
-<form method="POST">
-  <input type="text" name="asset_name" value="{{ asset.asset_name }}" required>
-  <input type="text" name="category" value="{{ asset.category }}" required>
+<div class="container mt-4">
+  <h2 class="mb-4">Edit Asset</h2>
+  <form method="POST" class="needs-validation" novalidate>
+    <div class="mb-3">
+      <label for="assetName" class="form-label">Asset Name</label>
+      <input type="text" class="form-control" id="assetName" name="asset_name" value="{{ asset.asset_name }}" required>
+    </div>
 
-  <input type="text" name="condition" value="{{ asset.condition }}">
-  <input type="text" name="status" value="{{ asset.status }}">
-  
-  <button type="submit">Save Changes</button>
-</form>
+    <div class="mb-3">
+      <label for="category" class="form-label">Category</label>
+      <input type="text" class="form-control" id="category" name="category" value="{{ asset.category }}" required>
+    </div>
+
+    <div class="mb-3">
+      <label for="condition" class="form-label">Condition</label>
+      <input type="text" class="form-control" id="condition" name="condition" value="{{ asset.condition }}">
+    </div>
+
+    <div class="mb-3">
+      <label for="status" class="form-label">Status</label>
+      <input type="text" class="form-control" id="status" name="status" value="{{ asset.status }}">
+    </div>
+
+    <button type="submit" class="btn btn-primary">💾 Save Changes</button>
+    <a href="{{ url_for('views.home') }}" class="btn btn-secondary ms-2">Cancel</a>
+  </form>
+</div>
 {% endblock %}

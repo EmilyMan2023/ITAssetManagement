@@ -20,27 +20,43 @@
         <title>{% block title %}Home{% endblock %}</title>
     </head>
     <body>
-        <nav class="navbar navbar-exapnd-lg navbar-dark bg-dark">
+        <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <div class="container-fluid">
+            <!-- Left: Logo -->
+            <a class="navbar-brand" href="/">
+            <img src="{{ url_for('static', filename='asset_logo.png') }}" alt="Logo" height="75">
+            </a>
+
+            <!-- Toggler (for mobile) -->
             <button
-                class="navbar-toggler"
-                type="button"
-                data-toggle="collapse"
-                data-target="#navbar">
-                <span class="navbar-toggler-icon"></span>
+            class="navbar-toggler"
+            type="button"
+            data-bs-toggle="collapse"
+            data-bs-target="#navbar"
+            aria-controls="navbar"
+            aria-expanded="false"
+            aria-label="Toggle navigation"
+            >
+            <span class="navbar-toggler-icon"></span>
             </button>
-            <div class="collapse navbar-collapse" id="navbar">
-                <div class="navbar-nav">
-                    {% if user.is_authenticated %}
-                    <a class="nav-item nav-link" id="home" href="/">Home</a>
-                    <a class="nav-item nav-link" id="dashboard" href="{{ url_for('views.dashboard') }}">Dashboard</a>
-                    <a class="nav-item nav-link" id="logout" href="/logout">Logout</a>
-                    {% else %}
-                    <a class="nav-item nav-link" id="login" href="/login">Login</a>
-                    <a class="nav-item nav-link" id="signUp" href="/sign-up">Sign Up</a>
-                    {% endif %}
-                </div>
+
+            <!-- Right: Nav links -->
+            <div class="collapse navbar-collapse justify-content-end" id="navbar">
+            <div class="navbar-nav">
+                {% if current_user.is_authenticated %}
+                <a class="nav-item nav-link" href="/">All Assets</a>
+                <a class="nav-item nav-link" href="{{ url_for('views.users') }}">Users</a>
+                <a class="nav-item nav-link" href="{{ url_for('views.dashboard') }}">Asset History Dashboard</a>
+                <a class="nav-item nav-link" href="/logout">Logout</a>
+                {% else %}
+                <a class="nav-item nav-link" href="/login">Login</a>
+                <a class="nav-item nav-link" href="/sign-up">Sign Up</a>
+                {% endif %}
             </div>
+            </div>
+        </div>
         </nav>
+
 
         {% with messages = get_flashed_messages(with_categories=true) %}
         {% if messages %}

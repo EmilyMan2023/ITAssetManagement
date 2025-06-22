@@ -42,6 +42,7 @@ def sign_up():
         last_name = request.form.get('lastName')
         password1 = request.form.get('password1')
         password2 = request.form.get('password2')
+        department = request.form.get('department')
         role = request.form.get('role') 
 
         user = User.query.filter_by(email=email).first()
@@ -57,6 +58,8 @@ def sign_up():
             flash('Passwords do not match.', category='error')
         elif len(password1) < 6:
             flash('Password must be greater than 5 characters.', category='error')
+        elif len(department) < 2:
+            flash('Department must be greater than 1 character.', category='error')
         elif role not in ['user', 'admin']:
             flash('Invalid role selected.', category='error')
         else:
@@ -65,6 +68,7 @@ def sign_up():
                 first_name=first_name,
                 last_name=last_name,
                 password=generate_password_hash(password1, method='pbkdf2:sha256'),
+                department=department,
                 role=role
             )
             db.session.add(new_user)
