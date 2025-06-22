@@ -6,6 +6,7 @@
 <h1>this is the sign-up page</h1> 
 <form method="POST">
   <h3 align="center">Sign Up</h3>
+  
   <div class="form-group">
     <label for="email">Email Address</label>
     <input
@@ -14,8 +15,10 @@
       id="email"
       name="email"
       placeholder="Enter email"
+      required
     />
   </div>
+
   <div class="form-group">
     <label for="firstName">First Name</label>
     <input
@@ -24,8 +27,22 @@
       id="firstName"
       name="firstName"
       placeholder="Enter first name"
+      required
     />
   </div>
+
+  <div class="form-group">
+    <label for="lastName">Last Name</label>
+    <input
+      type="text"
+      class="form-control"
+      id="lastName"
+      name="lastName"
+      placeholder="Enter surname"
+      required
+    />
+  </div>
+
   <div class="form-group">
     <label for="password1">Password</label>
     <input
@@ -34,8 +51,10 @@
       id="password1"
       name="password1"
       placeholder="Enter password"
+      required
     />
   </div>
+
   <div class="form-group">
     <label for="password2">Password (Confirm)</label>
     <input
@@ -44,8 +63,18 @@
       id="password2"
       name="password2"
       placeholder="Confirm password"
+      required
     />
   </div>
+
+  <div class="form-group">
+    <label for="role">Select Role</label>
+    <select class="form-control" id="role" name="role" required>
+      <option value="user">Regular</option>
+      <option value="admin">Admin</option>
+    </select>
+  </div>
+
   <br />
   <button type="submit" class="btn btn-primary">Submit</button>
 </form>

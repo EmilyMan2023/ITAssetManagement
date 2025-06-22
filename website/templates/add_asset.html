@@ -1,17 +1,12 @@
 {% extends "base.html" %}
-{% block title %}Assets{% endblock %}
-
+{% block title %}Add Asset{% endblock %}
 
 {% block content %}
-<p>🛠️ This is the Add Asset form page.</p>
-
-
+<br>
 <h2>Add Asset</h2>
 
-<form method="POST" action="{{ url_for('views.add_asset') }}">
-  <div class="container mt-4">
-  <h2>Add New Asset</h2>
-  <form method="POST">
+<div class="container mt-4">
+  <form method="POST" action="{{ url_for('views.add_asset') }}">
     <div class="mb-3">
       <label class="form-label">Asset Name</label>
       <input type="text" name="asset_name" class="form-control" required>
@@ -23,8 +18,9 @@
     </div>
 
     <div class="mb-3">
-      <label class="form-label">Purchase Date (YYYYMMDD or as float)</label>
-      <input type="number" name="purchase_date" class="form-control" step="0.01" required>
+      <label class="form-label">Purchase Date</label>
+      <input type="date" name="purchase_date" class="form-control" required>
+
     </div>
 
     <div class="mb-3">
@@ -34,13 +30,33 @@
 
     <div class="mb-3">
       <label class="form-label">Status</label>
-      <input type="text" name="status" class="form-control">
+      <select name="status" id="status" class="form-control" onchange="toggleAssignee(this.value)">
+        <option value="In Use">In Use</option>
+        <option value="Not In Use">Not In Use</option>
+      </select>
+    </div>
+
+    <div class="mb-3" id="assignee-wrapper">
+      <label class="form-label" for="assigned_to">Assign To:</label>
+      <select name="assigned_to" id="assigned_to" class="form-control">
+        {% for u in all_users %}
+          <option value="{{ u.id }}">{{ u.first_name }} {{ u.last_name or '' }}</option>
+        {% endfor %}
+      </select>
     </div>
 
     <button type="submit" class="btn btn-primary">Submit</button>
   </form>
 </div>
-</form>
 
+<script>
+  function toggleAssignee(status) {
+    const wrapper = document.getElementById('assignee-wrapper');
+    wrapper.style.display = status === 'Not In Use' ? 'none' : 'block';
+  }
 
+  document.addEventListener('DOMContentLoaded', function () {
+    toggleAssignee(document.getElementById('status').value);
+  });
+</script>
 {% endblock %}
