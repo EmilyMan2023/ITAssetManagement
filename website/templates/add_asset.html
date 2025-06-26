@@ -39,6 +39,7 @@
     <div class="mb-3" id="assignee-wrapper">
       <label class="form-label" for="assigned_to">Assign To:</label>
       <select name="assigned_to" id="assigned_to" class="form-control">
+        <option value="">-- Select a User --</option>
         {% for u in all_users %}
           <option value="{{ u.id }}">{{ u.first_name }} {{ u.last_name or '' }}</option>
         {% endfor %}

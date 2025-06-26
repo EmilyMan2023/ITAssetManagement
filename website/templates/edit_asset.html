@@ -22,11 +22,41 @@
 
     <div class="mb-3">
       <label for="status" class="form-label">Status</label>
-      <input type="text" class="form-control" id="status" name="status" value="{{ asset.status }}">
+      <select class="form-select" id="status" name="status" required>
+        <option value="Available" {% if asset.status == 'Available' %}selected{% endif %}>Not in use</option>
+        <option value="In Use" {% if asset.status == 'In Use' %}selected{% endif %}>In Use</option>
+        <option value="Retired" {% if asset.status == 'Retired' %}selected{% endif %}>Retired</option>
+      </select>
+    </div>
+
+    {% set show_assignment = asset.status == 'In Use' %}
+    <div class="mb-3" id="assign-user-section"
+         {% if show_assignment %}
+           style="display: block;"
+         {% else %}
+           style="display: none;"
+         {% endif %}>
+      <label for="assigned_to" class="form-label">Assign to User</label>
+      <select class="form-select" id="assigned_to" name="assigned_to">
+        <option value="">-- Select a User --</option>
+        {% for u in all_users %}
+          <option value="{{ u.id }}" {% if asset.assigned_to == u.id %}selected{% endif %}>
+            {{ u.first_name }} {{ u.last_name }}
+          </option>
+        {% endfor %}
+      </select>
     </div>
 
     <button type="submit" class="btn btn-primary">💾 Save Changes</button>
     <a href="{{ url_for('views.home') }}" class="btn btn-secondary ms-2">Cancel</a>
   </form>
 </div>
+
+<script>
+  // Toggle user assignment field based on status value
+  document.getElementById("status").addEventListener("change", function () {
+    const assignSection = document.getElementById("assign-user-section");
+    assignSection.style.display = this.value === "In Use" ? "block" : "none";
+  });
+</script>
 {% endblock %}

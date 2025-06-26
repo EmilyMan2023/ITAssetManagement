@@ -44,14 +44,13 @@ def logout():
 @auth.route('/sign-up', methods=['GET', 'POST'])
 def sign_up():
     if request.method == 'POST':
-        email = request.form.get('email')
-        first_name = request.form.get('firstName')
-        last_name = request.form.get('lastName')
-        password1 = request.form.get('password1')
-        password2 = request.form.get('password2')
-        department = request.form.get('department')
-        # should be 'regular' or 'admin'
-        role = request.form.get('role') 
+        email = request.form.get('email', '').strip()
+        first_name = request.form.get('firstName', '').strip()
+        last_name = request.form.get('lastName', '').strip()
+        password1 = request.form.get('password1', '')
+        password2 = request.form.get('password2', '')
+        department = request.form.get('department', '').strip()
+        role = request.form.get('role', '').strip()
 
         # validation checks
         user = User.query.filter_by(email=email).first()
@@ -72,7 +71,6 @@ def sign_up():
         elif role not in ['user', 'admin']:
             flash('Invalid role selected.', category='error')
         else:
-            # create new user with hashed password
             new_user = User(
                 email=email,
                 first_name=first_name,
@@ -83,10 +81,9 @@ def sign_up():
             )
             db.session.add(new_user)
             db.session.commit()
-            # auto-login after signup
             login_user(new_user, remember=True)
             flash('Account created!', category='success')
             return redirect(url_for('views.home'))
 
-    # GET request - show signup form
     return render_template("sign-up.html", user=current_user)
+
