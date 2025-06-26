@@ -72,3 +72,5 @@ def test_admin_access_dashboard(client, app):
     response = client.get('/dashboard')
     assert b'Asset History Dashboard' in response.data
 
+
+
