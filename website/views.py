@@ -15,7 +15,8 @@ def home():
     
     from sqlalchemy import or_
 
-    assets = Asset.query.all()
+    # makes the newest asset added appear first
+    assets = Asset.query.order_by(Asset.id.desc()).all()
     all_users = User.query.all()
 
     return render_template('home.html', user=current_user, assets=assets, all_users=all_users)
@@ -24,6 +25,7 @@ def home():
 @login_required
 def users():
     from .models import User
+    # Fetch all users to render in a table
     all_users = User.query.all()
     
     return render_template('users.html', users=all_users)
@@ -39,6 +41,7 @@ def add_asset():
     print("DB path:", os.path.abspath("database.db"))
     print("Can write?", os.access("database.db", os.W_OK))
     if request.method == 'POST':
+        # Extract form fields from db model
         asset_name = request.form['asset_name']
         category = request.form['category']
         purchase_date = datetime.strptime(request.form['purchase_date'], '%Y-%m-%d').date()
@@ -46,9 +49,10 @@ def add_asset():
         status = request.form['status']
         assigned_user_id = request.form.get('assigned_to')  # Could be empty
 
+        # Assign to user only if status is "In Use"
         assigned_id = int(assigned_user_id) if status == 'In Use' and assigned_user_id else None
 
-
+        # Create and save new asset
         new_asset = Asset(
             asset_name=asset_name,
             category=category,
@@ -62,6 +66,7 @@ def add_asset():
         db.session.add(new_asset)
         db.session.commit()
 
+        # Log history entry for asset creation
         history = Asset_History(
             asset_id=new_asset.id,
             user_id=current_user.id,
@@ -73,13 +78,15 @@ def add_asset():
         
         flash('Asset added successfully!', category='success')
         return redirect(url_for('views.home'))
-
+    
+    # GET: Render form to add a new asset
     all_users = User.query.all()
     return render_template('add_asset.html', user=current_user, all_users=all_users)
 
 @views.route('/edit-asset/<int:id>', methods=['GET', 'POST'])
 @login_required
 def edit_asset(id):
+    # Get asset or return 404
     asset = Asset.query.get_or_404(id)
 
     if not asset:
@@ -110,9 +117,11 @@ def edit_asset(id):
             changes.append(f"Status: '{asset.status}' → '{new_status}'")
             asset.status = new_status
 
+        # Commit changes if any
         if changes:
             db.session.commit()  # Save the changes first
 
+            # Save update history
             history = Asset_History(
                 asset_id=asset.id,
                 user_id=current_user.id,
@@ -128,16 +137,17 @@ def edit_asset(id):
 
         return redirect(url_for('views.home'))
 
+    # GET: Show form pre-filled with asset data
     return render_template('edit_asset.html', asset=asset, user=current_user)
 
 
 @views.route('/delete-asset/<int:id>', methods=['POST'])
 @login_required
-@admin_only
+@admin_only # Only admins can delete assets
 def delete_asset(id):
     asset = Asset.query.get_or_404(id)
 
-    # Log the deletion *before* removing the asset
+    # Log the deletion before removing the asset
     history = Asset_History(
         asset_id=asset.id,
         user_id=current_user.id,
@@ -156,7 +166,7 @@ def delete_asset(id):
 @login_required
 def dashboard():
 
-
+    # Show all assets and recent history
     all_assets = Asset.query.all()
     all_history = Asset_History.query.order_by(Asset_History.timestamp.desc()).all()
 
