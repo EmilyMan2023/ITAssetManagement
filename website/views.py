@@ -95,6 +95,7 @@ def edit_asset(id):
 
     if request.method == 'POST':
         changes = []
+        new_assigned_to = request.form.get('assigned_to')
 
         # Compare and update each field
         new_name = request.form.get('asset_name')
@@ -117,6 +118,25 @@ def edit_asset(id):
             changes.append(f"Status: '{asset.status}' → '{new_status}'")
             asset.status = new_status
 
+        # When a new assigned user is selected
+        if new_assigned_to and (asset.assigned_to != int(new_assigned_to)):
+            old_user = User.query.get(asset.assigned_to) if asset.assigned_to else None
+            new_user = User.query.get(int(new_assigned_to))
+
+            old_name = f"{old_user.first_name} {old_user.last_name}" if old_user else "None"
+            new_name = f"{new_user.first_name} {new_user.last_name}"
+
+            changes.append(f"Assigned to: '{old_name}' → '{new_name}'")
+            asset.assigned_to = new_user.id
+
+        # When user is cleared (assigned_to set to None)
+        elif new_assigned_to == '':
+            if asset.assigned_to is not None:
+                old_user = User.query.get(asset.assigned_to)
+                old_name = f"{old_user.first_name} {old_user.last_name}" if old_user else "Unknown"
+                changes.append(f"Assigned to: '{old_name}' → None")
+                asset.assigned_to = None
+
         # Commit changes if any
         if changes:
             db.session.commit()  # Save the changes first
@@ -138,7 +158,9 @@ def edit_asset(id):
         return redirect(url_for('views.home'))
 
     # GET: Show form pre-filled with asset data
-    return render_template('edit_asset.html', asset=asset, user=current_user)
+    all_users = User.query.all()
+    return render_template('edit_asset.html', asset=asset, user=current_user, all_users=all_users)
+
 
 
 @views.route('/delete-asset/<int:id>', methods=['POST'])
