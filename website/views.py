@@ -90,7 +90,7 @@ def edit_asset(id):
     asset = Asset.query.get_or_404(id)
 
     if not asset:
-        flash("Asset not found or you don't have permission to edit it.", category="error")
+        flash("Asset not found.", category="error")
         return redirect(url_for('views.home'))
 
     if request.method == 'POST':
