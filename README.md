@@ -13,21 +13,25 @@ A Flask-based web application for managing IT assets within an organization. Inc
 ### 1. Clone this repository
 
 git clone https://github.com/EmilyMan2023/ITAssetManagement
+
 cd it-asset-management
 
 ### 2. Create and activate virtual environment
 
 python -m venv venv
+
 source venv/bin/activate  # On Windows: venv\Scripts\activate
 
 ### 3. Install dependencies
 
 Make sure you have a virtual environment activated, then run:
+
 pip install -r requirements.txt
 
 ### 4. Run the application 
 
 python -m flask run
+
 Then visit: http://localhost:5000
 
 
