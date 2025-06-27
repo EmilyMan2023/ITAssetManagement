@@ -2,10 +2,10 @@
 A Flask-based web application for managing IT assets within an organization. Includes role-based user access, asset history tracking, user assignment, and real-time dashboard views.
 
 ## Technologies 
-- Python 3.X
+- Python 3.11.2
 - Flask
 - SQLAlchemy and SQLite
-- Bootstrap
+- Bootstrap 5
 - Jinja 2
 - Pytest
 
