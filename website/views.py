@@ -13,7 +13,6 @@ def home():
     print("🔍 Current user ID:", current_user.id)
     print("🔒 Authenticated:", current_user.is_authenticated)
     
-    from sqlalchemy import or_
 
     # makes the newest asset added appear first
     assets = Asset.query.order_by(Asset.id.desc()).all()

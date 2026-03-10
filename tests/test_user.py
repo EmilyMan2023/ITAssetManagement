@@ -1,4 +1,3 @@
-from werkzeug.security import generate_password_hash
 
 def test_known_user_shown_in_user_table(client, register_and_login_admin, app):
     register_and_login_admin()
