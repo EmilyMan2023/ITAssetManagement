@@ -28,7 +28,7 @@ jobs:
         run: ruff check .
 
       - name: Security scan with Bandit
-        run: bandit -r .
+        run: bandit -r . -c .bandit
 
       - name: Run tests
         run: pytest

@@ -12,7 +12,7 @@ DB_NAME = os.path.join(os.path.dirname(__file__), 'database.db')
 def create_app():
     app = Flask(__name__)
     # secret key used for session management 
-    app.config['SECRET_KEY'] = 'qwertyuiop'
+    app.config['SECRET_KEY'] = os.getenv("SECRET_KEY", "dev-secret")
     # set database URI if not already configured
     if 'SQLALCHEMY_DATABASE_URI' not in app.config:
         DB_NAME = os.path.join(os.path.dirname(__file__), 'database.db')
