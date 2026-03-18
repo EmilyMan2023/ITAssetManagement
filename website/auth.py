@@ -50,7 +50,9 @@ def sign_up():
         password1 = request.form.get('password1', '')
         password2 = request.form.get('password2', '')
         department = request.form.get('department', '').strip()
-        role = request.form.get('role', '').strip()
+
+        # Force role to 'user' — no admin creation via sign-up
+        role = "user"
 
         # validation checks
         user = User.query.filter_by(email=email).first()
@@ -68,9 +70,8 @@ def sign_up():
             flash('Password must be greater than 5 characters.', category='error')
         elif len(department) < 2:
             flash('Department must be greater than 1 character.', category='error')
-        elif role not in ['user', 'admin']:
-            flash('Invalid role selected.', category='error')
         else:
+            # Create new user with fixed role 'user'
             new_user = User(
                 email=email,
                 first_name=first_name,
@@ -86,4 +87,5 @@ def sign_up():
             return redirect(url_for('views.home'))
 
     return render_template("sign-up.html", user=current_user)
+
 
