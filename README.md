@@ -1,5 +1,5 @@
 # 🖥️ IT Asset Management App
-A Flask-based web application for managing IT assets within an organization. Includes role-based user access, asset history tracking, user assignment, and real-time dashboard views.
+A Flask-based web application for managing IT assets within an organization. Includes role-based user access, asset history tracking and real-time dashboard views.
 
 ## Technologies 
 - Python 3.11.2
