@@ -32,7 +32,7 @@ def register_and_login_admin(client, app):
             'lastName': 'Tester',
             'password1': 'adminpass',
             'password2': 'adminpass',
-            'department': 'IT',  # ✅ add this
+            'department': 'IT',
             'role': 'admin'
         }, follow_redirects=True)
         client.post('/login', data={
@@ -40,5 +40,6 @@ def register_and_login_admin(client, app):
             'password': 'adminpass'
         }, follow_redirects=True)
     return do_login
+
 
 
